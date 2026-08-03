@@ -725,8 +725,13 @@ function CVStudioMain() {
 		const link = document.createElement("a");
 		link.href = url;
 		link.download = `${baseName}.json`;
+		link.rel = "noopener";
+		// Append to the DOM and defer the revoke: revoking immediately after click() breaks the
+		// download on several browsers (notably iOS Safari), producing a stale/empty file.
+		document.body.appendChild(link);
 		link.click();
-		URL.revokeObjectURL(url);
+		link.remove();
+		setTimeout(() => URL.revokeObjectURL(url), 4000);
 	};
 	const importData = (file?: File) => {
 		if (!file) return;
