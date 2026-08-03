@@ -109,6 +109,7 @@ export type CV = {
 	city: string;
 	nationality: string;
 	age: string;
+	permis: string;
 	photo: string;
 	profile: string;
 	skills: string;
@@ -203,6 +204,7 @@ export const sample: CV = {
 	city: "Île-de-France",
 	nationality: "Française",
 	age: "29 ans",
+	permis: "Permis B",
 	photo: "",
 	profile:
 		"Commerciale orientée développement et fidélisation, avec une expérience en vente B2B, gestion de comptes clients, appels d'offres et outils CRM. Organisée, autonome et dotée d'un excellent relationnel.",
@@ -259,7 +261,7 @@ export const parseLanguage = (line: string) => {
 	return { name, level: `${level}${extraLevel}`.trim(), dots };
 };
 
-export type ContactKey = "email" | "phone" | "city" | "nationality" | "age";
+export type ContactKey = "email" | "phone" | "city" | "nationality" | "age" | "permis";
 
 /** Contact fields in display order (typed, so each can carry its own icon), empties removed. */
 export const contactItems = (cv: CV): { key: ContactKey; value: string }[] =>
@@ -270,6 +272,7 @@ export const contactItems = (cv: CV): { key: ContactKey; value: string }[] =>
 			["city", cv.city],
 			["nationality", cv.nationality],
 			["age", cv.age],
+			["permis", cv.permis],
 		] as [ContactKey, string][]
 	)
 		.filter(([, value]) => value)

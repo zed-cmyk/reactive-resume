@@ -491,6 +491,7 @@ function Editor({ cv, setCv }: { cv: CV; setCv: (cv: CV) => void }) {
 				<Field label="Ville" value={cv.city} onChange={(value) => set("city", value)} />
 				<Field label="Nationalité" value={cv.nationality} onChange={(value) => set("nationality", value)} />
 				<Field label="Âge" value={cv.age} onChange={(value) => set("age", value)} />
+				<Field label="Permis" value={cv.permis} onChange={(value) => set("permis", value)} />
 				<Field label="Profil" value={cv.profile} onChange={(value) => set("profile", value)} area />
 			</section>
 			<section className="cv-panel">

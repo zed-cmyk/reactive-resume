@@ -65,6 +65,14 @@ const ContactIcon = ({ name, color, size = 9 }: { name: ContactKey; color: strin
 				<Path d="M9 3.5v4M15 3.5v4" stroke={color} {...ICON_STROKE} />
 			</>
 		)}
+		{name === "permis" && (
+			<>
+				<Path d="M6 13l1.4-3.8a2 2 0 0 1 1.88-1.3h5.44a2 2 0 0 1 1.88 1.3L18 13" stroke={color} {...ICON_STROKE} />
+				<Path d="M4.5 13h15v4a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1z" stroke={color} {...ICON_STROKE} />
+				<Circle cx={8} cy={18} r={1.6} stroke={color} {...ICON_STROKE} />
+				<Circle cx={16} cy={18} r={1.6} stroke={color} {...ICON_STROKE} />
+			</>
+		)}
 	</Svg>
 );
 
