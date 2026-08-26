@@ -66,14 +66,67 @@ function Field({
 	);
 }
 
+/** Move an entry one slot up (-1) or down (+1); out-of-range moves are a no-op. */
+const moveItem = <T,>(items: T[], from: number, delta: number): T[] => {
+	const to = from + delta;
+	if (to < 0 || to >= items.length) return items;
+	const next = [...items];
+	const [moved] = next.splice(from, 1);
+	next.splice(to, 0, moved);
+	return next;
+};
+
+/** Reorder + delete controls shared by every entry card. */
+function EntryActions({
+	onMoveUp,
+	onMoveDown,
+	onRemove,
+}: {
+	onMoveUp?: () => void;
+	onMoveDown?: () => void;
+	onRemove: () => void;
+}) {
+	return (
+		<div className="cv-card-actions">
+			<button
+				type="button"
+				className="cv-move-button"
+				onClick={onMoveUp}
+				disabled={!onMoveUp}
+				title="Monter"
+				aria-label="Monter"
+			>
+				↑
+			</button>
+			<button
+				type="button"
+				className="cv-move-button"
+				onClick={onMoveDown}
+				disabled={!onMoveDown}
+				title="Descendre"
+				aria-label="Descendre"
+			>
+				↓
+			</button>
+			<button type="button" className="cv-link-button" onClick={onRemove}>
+				Supprimer
+			</button>
+		</div>
+	);
+}
+
 function ExperienceEditor({
 	item,
 	onChange,
 	onRemove,
+	onMoveUp,
+	onMoveDown,
 }: {
 	item: Experience;
 	onChange: (item: Experience) => void;
 	onRemove: () => void;
+	onMoveUp?: () => void;
+	onMoveDown?: () => void;
 }) {
 	return (
 		<div className="cv-mini-card">
@@ -91,9 +144,7 @@ function ExperienceEditor({
 				onChange={(description) => onChange({ ...item, description })}
 				area
 			/>
-			<button type="button" className="cv-link-button" onClick={onRemove}>
-				Supprimer
-			</button>
+			<EntryActions onMoveUp={onMoveUp} onMoveDown={onMoveDown} onRemove={onRemove} />
 		</div>
 	);
 }
@@ -102,10 +153,14 @@ function EducationEditor({
 	item,
 	onChange,
 	onRemove,
+	onMoveUp,
+	onMoveDown,
 }: {
 	item: Education;
 	onChange: (item: Education) => void;
 	onRemove: () => void;
+	onMoveUp?: () => void;
+	onMoveDown?: () => void;
 }) {
 	return (
 		<div className="cv-mini-card">
@@ -115,9 +170,7 @@ function EducationEditor({
 				<Field label="Date" value={item.date} onChange={(date) => onChange({ ...item, date })} />
 			</div>
 			<Field label="Lieu" value={item.place} onChange={(place) => onChange({ ...item, place })} />
-			<button type="button" className="cv-link-button" onClick={onRemove}>
-				Supprimer
-			</button>
+			<EntryActions onMoveUp={onMoveUp} onMoveDown={onMoveDown} onRemove={onRemove} />
 		</div>
 	);
 }
@@ -512,6 +565,12 @@ function Editor({ cv, setCv }: { cv: CV; setCv: (cv: CV) => void }) {
 								cv.experiences.filter((_, i) => i !== index),
 							)
 						}
+						onMoveUp={index > 0 ? () => set("experiences", moveItem(cv.experiences, index, -1)) : undefined}
+						onMoveDown={
+							index < cv.experiences.length - 1
+								? () => set("experiences", moveItem(cv.experiences, index, 1))
+								: undefined
+						}
 					/>
 				))}
 				<button
@@ -541,6 +600,10 @@ function Editor({ cv, setCv }: { cv: CV; setCv: (cv: CV) => void }) {
 								"education",
 								cv.education.filter((_, i) => i !== index),
 							)
+						}
+						onMoveUp={index > 0 ? () => set("education", moveItem(cv.education, index, -1)) : undefined}
+						onMoveDown={
+							index < cv.education.length - 1 ? () => set("education", moveItem(cv.education, index, 1)) : undefined
 						}
 					/>
 				))}

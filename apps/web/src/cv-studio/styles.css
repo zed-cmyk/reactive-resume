@@ -109,6 +109,33 @@
 	background: #263442;
 	color: white;
 }
+.cv-card-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.cv-card-actions .cv-link-button {
+	margin-left: auto;
+	padding-left: 12px;
+}
+.cv-move-button {
+	border: 0;
+	border-radius: 10px;
+	padding: 6px 12px;
+	font-size: 15px;
+	line-height: 1;
+	font-weight: 800;
+	color: white;
+	background: rgba(255, 255, 255, 0.12);
+	cursor: pointer;
+}
+.cv-move-button:hover:not(:disabled) {
+	background: rgba(255, 255, 255, 0.22);
+}
+.cv-move-button:disabled {
+	opacity: 0.3;
+	cursor: default;
+}
 .cv-file-button {
 	display: block;
 	text-align: center;
